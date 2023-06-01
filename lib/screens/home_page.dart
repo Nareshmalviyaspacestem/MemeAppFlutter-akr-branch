@@ -53,36 +53,6 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blueGrey,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0, top: 5.0),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.shopping_cart_outlined,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => CartPage()));
-                    }),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      maxRadius: 10,
-                    ),
-                    Text("$cartCounter"),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
       ),
       body: FutureBuilder<MemesModel>(
         future: memes,
@@ -230,5 +200,15 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
+  }
+
+  //todo: Share Function
+  void shareAtIndex(int index) {
+
+  }
+
+  //todo: Download Function
+  void downloadAtIndex(int index) {
+    
   }
 }
