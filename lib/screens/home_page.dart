@@ -95,8 +95,8 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
               child: DynamicHeightGridView(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 25,
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 10,
                   itemCount:
                       //nullcheck operator
                       snapshot.hasData ? snapshot.data!.data!.memes!.length : 1,
