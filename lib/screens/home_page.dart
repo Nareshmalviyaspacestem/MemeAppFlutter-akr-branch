@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           return Scrollbar(
             radius: const Radius.circular(10),
             thumbVisibility: true,
-            thickness: 20,
+            thickness: 5,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
               child: DynamicHeightGridView(
@@ -123,17 +123,28 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   // Text(
                                   //     "memes type : ${snapshot.data!.data!.memes.runtimeType}"),
-                                  Text(
+                                 /* Text(
                                       "${snapshot.data!.data!.memes![index].name}",
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500)),
+                                  const SizedBox(height: 5),*/
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.network(memeImageUrl)),
                                   const SizedBox(height: 5),
-                                  Image.network(memeImageUrl),
-                                  const SizedBox(height: 5),
+                                 Row(children: [
+                                   IconButton(onPressed: (){
 
-                                  ElevatedButton(
+                                   }, icon: Icon(Icons.share)),
+                                   IconButton(onPressed: (){
+
+                                   }, icon: Icon(Icons.download))
+
+                                 ],)
+
+                                 /* ElevatedButton(
                                       onPressed: memeCartProvider
                                               .getMemesIdList!
                                               .contains(memeId)
@@ -200,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                                                 ? Colors.white.withOpacity(0.5)
                                                 : Colors.white),
                                       )),
-                                  PreviewDownload(imageUrl: memeImageUrl)
+                                  PreviewDownload(imageUrl: memeImageUrl)*/
                                 ]),
                           ));
                     } else if (snapshot.hasError) {
