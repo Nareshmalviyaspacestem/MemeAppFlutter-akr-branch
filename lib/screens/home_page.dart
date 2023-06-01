@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:memeapp/models/cart_card_model.dart';
 import 'package:memeapp/providers/cart_counter_provider.dart';
@@ -53,6 +54,39 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blueGrey,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0, top: 5.0),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                IconButton(
+                    icon: const Icon(
+                      Icons.filter_list_rounded,
+                      color: Colors.white,
+                    ),
+                    iconSize: 30,
+                    onPressed: () {
+
+                      /*Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => CartPage()));
+                      */
+
+                    }),
+              /*  Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: Colors.orange,
+                      maxRadius: 10,
+                    ),
+                    Text("$cartCounter"),
+                  ],
+                ),*/
+              ],
+            ),
+          )
+        ],
       ),
       body: FutureBuilder<MemesModel>(
         future: memes,
@@ -62,11 +96,11 @@ class _HomePageState extends State<HomePage> {
             thumbVisibility: true,
             thickness: 5,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
               child: DynamicHeightGridView(
                   crossAxisCount: 2,
                   mainAxisSpacing: 5,
-                  crossAxisSpacing: 10,
+                  crossAxisSpacing: 5,
                   itemCount:
                       //nullcheck operator
                       snapshot.hasData ? snapshot.data!.data!.memes!.length : 1,
@@ -101,8 +135,13 @@ class _HomePageState extends State<HomePage> {
                                           fontWeight: FontWeight.w500)),
                                   const SizedBox(height: 5),*/
                                   ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(memeImageUrl)),
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0) ,topRight:  Radius.circular(8.0)),
+                                      child: SizedBox(
+                                          height: 120,
+                                          width: double.infinity,
+                                          child: Image.network(memeImageUrl , width: double.infinity,height: double.infinity,fit: BoxFit.fill,)
+
+                                      )),
                                   const SizedBox(height: 5),
                                  Row(children: [
                                    IconButton(onPressed: (){
@@ -200,15 +239,5 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-  }
-
-  //todo: Share Function
-  void shareAtIndex(int index) {
-
-  }
-
-  //todo: Download Function
-  void downloadAtIndex(int index) {
-    
   }
 }
