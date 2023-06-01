@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-                fontFamily: 'SpaceMono',
+                fontFamily: 'SpaceMonox',
                 useMaterial3: true,
                 colorSchemeSeed: const Color(0xff323030)),
             home: const SplashScreen()));
