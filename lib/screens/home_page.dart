@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:memeapp/models/memes_model.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
-//import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 //fileName : fintechdashboardclone
 
 Future<MemesModel> getMemesApi() async {
@@ -148,10 +148,10 @@ class _HomePageState extends State<HomePage> {
                                  Row(children: [
                                    IconButton(onPressed: (){
                                      shareAtIndex(index!, context);
-                                   }, icon: Icon(Icons.share)),
+                                   }, icon: const Icon(Icons.share)),
                                    IconButton(onPressed: (){
 
-                                   }, icon: Icon(Icons.download))
+                                   }, icon: const Icon(Icons.download))
 
                                  ],)
 
@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
     final directory_ = await getApplicationDocumentsDirectory();
     // final directory = await getExternalStorageDirectory().path;
     print("\n---> Directory Path :\n${directory_}");
-
+    Share.share('check out my website https://example.com');
     // ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     // Uint8List pngBytes = byteData.buffer.asUint8List();
     // File imgFile = new File('$directory/screenshot.png');
