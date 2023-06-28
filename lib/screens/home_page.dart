@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:io';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:memeapp/models/cart_card_model.dart';
 import 'package:memeapp/providers/cart_counter_provider.dart';
@@ -11,6 +12,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:memeapp/models/memes_model.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 //fileName : fintechdashboardclone
 
 Future<MemesModel> getMemesApi() async {
@@ -145,11 +148,13 @@ class _HomePageState extends State<HomePage> {
                                   const SizedBox(height: 5),
                                  Row(children: [
                                    IconButton(onPressed: (){
-
-                                   }, icon: Icon(Icons.share)),
+                                     String memeImageUrl =
+                                     snapshot.data!.data!.memes![index].url.toString();
+                                     shareAtIndex(memeImageUrl , context);
+                                   }, icon: const Icon(Icons.share)),
                                    IconButton(onPressed: (){
 
-                                   }, icon: Icon(Icons.download))
+                                   }, icon: const Icon(Icons.download))
 
                                  ],)
 
@@ -239,5 +244,36 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
+  }
+
+  //todo: Share Function
+  void shareAtIndex(String memeImageUrl, BuildContext context) async {
+    //final directory_ = await getApplicationDocumentsDirectory();
+    //final directory = await getExternalStorageDirectory().path;
+    //print("\n---> Directory Path :\n${directory_}");
+
+    final uri = Uri.parse(memeImageUrl);
+    final response = await http.get(uri);
+    final bytes  = response.bodyBytes;
+    final temp = await getTemporaryDirectory();
+    final path = '${temp.path}/image.jpg';
+    File(path).writeAsBytesSync(bytes);
+    Share.shareFiles([path], text: '');
+
+    // ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    // Uint8List pngBytes = byteData.buffer.asUint8List();
+    // File imgFile = new File('$directory/screenshot.png');
+    // imgFile.writeAsBytes(pngBytes);
+    // final RenderBox box = context.findRenderObject();
+    // Share.shareFile(File('$directory/screenshot.png'),
+    // subject: 'Share ScreenShot',
+    // text: 'Hello, check your share files!',
+    // sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
+    // );
+  }
+
+  //todo: Download Function
+  void downloadAtIndex(int index) {
+
   }
 }
