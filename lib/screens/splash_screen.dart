@@ -22,23 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: Padding(
-      padding: const EdgeInsets.all(50.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Card(
-              elevation: 5,
-              child: Image.asset("assets/images/splash_screen.jpg"),
-            ),
-          ),
-          const Text("Meme App",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500)),
-        ],
-      ),
-    )));
+
+        body: Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: Image.asset("assets/images/main_splash.png",fit: BoxFit.fill,)));
   }
 }
