@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:memeapp/models/cart_card_model.dart';
 import 'package:memeapp/providers/cart_counter_provider.dart';
 import 'package:memeapp/providers/meme_cart_provider.dart';
@@ -15,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 //fileName : fintechdashboardclone
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future<MemesModel> getMemesApi() async {
   final response =
@@ -153,7 +156,8 @@ class _HomePageState extends State<HomePage> {
                                      shareAtIndex(memeImageUrl , context);
                                    }, icon: const Icon(Icons.share)),
                                    IconButton(onPressed: (){
-
+                                     requestStoragePermissions(memeImageUrl , context);
+                                    // downloadAtIndex(memeImageUrl , context);
                                    }, icon: const Icon(Icons.download))
 
                                  ],)
@@ -273,7 +277,64 @@ class _HomePageState extends State<HomePage> {
   }
 
   //todo: Download Function
-  void downloadAtIndex(int index) {
+  Future<void> downloadAtIndex(String url, BuildContext context) async {
 
+    var response = await http.get(Uri.parse(url));
+    var directory = await getExternalStorageDirectory();
+    var imagePath;
+    if (directory != null) {
+      imagePath = '${directory.path}/image132123.jpg';
+
+      File imageFile = File(imagePath);
+      await imageFile.writeAsBytes(response.bodyBytes);
+      await GallerySaver.saveImage(imagePath);
+
+      // Show a message or perform any other actions after the image is downloaded and saved
+    } else {
+      // Handle the case where directory is null
+      // Display an error message or take appropriate action
+      final snackBar = SnackBar(
+        content: Text('Error'),
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(
+          label: 'Close',
+          onPressed: () {
+            // Perform some action when the SnackBar action is pressed
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+    File imageFile = File(imagePath);
+    await imageFile.writeAsBytes(response.bodyBytes);
+
+    final snackBar = SnackBar(
+      content: Text('Downloaded'),
+      duration: Duration(seconds: 3),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Perform some action when the SnackBar action is pressed
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> requestStoragePermissions(String url, BuildContext context) async {
+    PermissionStatus status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      // Permission granted, proceed with file operations
+      downloadAtIndex(url , context);
+    } else if (status.isDenied) {
+      // Permission denied
+      // Optionally, show an explanation to the user and ask again
+    } else if (status.isPermanentlyDenied) {
+      // Permission permanently denied
+      // Open app settings for the user to manually grant permission
+      openAppSettings();
+    }
   }
 }

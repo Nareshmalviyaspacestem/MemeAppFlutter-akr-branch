@@ -39,6 +39,8 @@ dependencies:
     path: ^1.8.1
     path_provider: ^2.0.13
     share_plus: ^7.0.2
+    permission_handler: ^10.3.0
+    gallery_saver: ^2.3.2
     # image_downloader: ^0.31.0
 
 dev_dependencies:
