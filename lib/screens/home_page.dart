@@ -1,13 +1,14 @@
 import 'dart:async';
-import 'dart:ffi';
+// import 'dart:ffi';
+// import 'dart:html';
 import 'dart:io';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:memeapp/models/cart_card_model.dart';
 import 'package:memeapp/providers/cart_counter_provider.dart';
 import 'package:memeapp/providers/meme_cart_provider.dart';
-import 'package:memeapp/screens/cart_page.dart';
-import 'package:memeapp/screens/preview_download.dart';
+// import 'package:memeapp/screens/cart_page.dart';
+// import 'package:memeapp/screens/preview_download.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -280,34 +281,56 @@ class _HomePageState extends State<HomePage> {
   Future<void> downloadAtIndex(String url, BuildContext context) async {
 
     var response = await http.get(Uri.parse(url));
-    var directory = await getExternalStorageDirectory();
-    var imagePath;
-    if (directory != null) {
-      imagePath = '${directory.path}/image132123.jpg';
-
-      File imageFile = File(imagePath);
-      await imageFile.writeAsBytes(response.bodyBytes);
-      await GallerySaver.saveImage(imagePath);
-
-      // Show a message or perform any other actions after the image is downloaded and saved
+    String imagePath = "";
+    if (Platform.isIOS) {
+      // Code specific to iOS
+      var directory = await getApplicationDocumentsDirectory();
+      if (directory != null) {
+        imagePath = '${directory.path}/image132123.jpg';
+      }else { return; }
+      print('Running on iOS');
+    } else if (Platform.isAndroid) {
+      // Code specific to Android
+      var directory = await getExternalStorageDirectory();
+      if (directory != null) {
+        imagePath = '${directory.path}/image132123.jpg';
+      }else { return; }
+      print('Running on Android');
     } else {
-      // Handle the case where directory is null
-      // Display an error message or take appropriate action
-      final snackBar = SnackBar(
-        content: Text('Error'),
-        duration: Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'Close',
-          onPressed: () {
-            // Perform some action when the SnackBar action is pressed
-          },
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
+      // Code for other platforms
+      print('Running on a platform other than iOS and Android');
     }
+    //var directory = await getExternalStorageDirectory();
+    // var dir = await get
+    // var imagePath;
+    // if (directory != null) {
+    //   imagePath = '${directory.path}/image132123.jpg';
+    //
+    //
+    //
+    //   // Show a message or perform any other actions after the image is downloaded and saved
+    // } else {
+    //   // Handle the case where directory is null
+    //   // Display an error message or take appropriate action
+    //   final snackBar = SnackBar(
+    //     content: Text('Error'),
+    //     duration: Duration(seconds: 3),
+    //     action: SnackBarAction(
+    //       label: 'Close',
+    //       onPressed: () {
+    //         // Perform some action when the SnackBar action is pressed
+    //       },
+    //     ),
+    //   );
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //   return;
+    // }
     File imageFile = File(imagePath);
     await imageFile.writeAsBytes(response.bodyBytes);
+    await GallerySaver.saveImage(imagePath);
+
+    File imageFile2 = File(imagePath);
+    await imageFile2.writeAsBytes(response.bodyBytes);
 
     final snackBar = SnackBar(
       content: Text('Downloaded'),
