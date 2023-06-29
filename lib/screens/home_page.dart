@@ -54,46 +54,24 @@ class _HomePageState extends State<HomePage> {
     int cartCounter = context.watch<CartCounterProvider>().getCartCount;
 
     return Scaffold(
-      backgroundColor: const Color(0xffEFE9FF),
-      appBar: AppBar(
-        title: const Text(
-          "Memes App",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blueGrey,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0, top: 5.0),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.filter_list_rounded,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    onPressed: () {
-
-                      /*Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => CartPage()));
-                      */
-
-                    }),
-              /*  Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      maxRadius: 10,
-                    ),
-                    Text("$cartCounter"),
-                  ],
-                ),*/
-              ],
+      backgroundColor: const Color(0xffFFFFFF),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: AppBar(
+          flexibleSpace: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Image.asset(
+                'assets/images/logo1.png',
+               color: Colors.white,
+                width: 150,
+                height: 40,
+              ),
             ),
-          )
-        ],
+          ),
+          backgroundColor: Color(0xffA375AD),
+        ),
       ),
       body: FutureBuilder<MemesModel>(
         future: memes,
@@ -125,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                           nameCart: memeName,
                           imageUrlCart: memeImageUrl);
                       return Card(
-                          elevation: 10,
+                          elevation: 0.5,
                           child: SizedBox(
                             child: Column(
                                 // mainAxisSize: MainAxisSize.max
@@ -142,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                                           fontWeight: FontWeight.w500)),
                                   const SizedBox(height: 5),*/
                                   ClipRRect(
-                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0) ,topRight:  Radius.circular(8.0)),
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0) ,topRight:  Radius.circular(5.0)),
                                       child: SizedBox(
                                           height: 120,
                                           width: double.infinity,
