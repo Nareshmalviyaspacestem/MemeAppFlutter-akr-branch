@@ -66,77 +66,82 @@ class _HomePageState extends State<HomePage> {
             thickness: 5,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                ),
-                itemCount: snapshot.hasData ? snapshot.data!.data!.memes!.length : 1,
-                itemBuilder: (context, index) {
-                  if (snapshot.hasData) {
-                    String memeId =
-                    snapshot.data!.data!.memes![index].id.toString();
-                    String memeName =
-                    snapshot.data!.data!.memes![index].name.toString();
-                    String memeImageUrl =
-                    snapshot.data!.data!.memes![index].url.toString();
-
-                    CartCardModel addCartItem = CartCardModel(
-                        id: memeId,
-                        nameCart: memeName,
-                        imageUrlCart: memeImageUrl);
-                    return Card(
-                      elevation: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          child: SizedBox(
-                            child: Stack(
-                              alignment: AlignmentDirectional.bottomStart,
-                              children: [
-                                SizedBox(
-                                    width: double.infinity,
-                                    child: Image.network(memeImageUrl , width: double.infinity,height: double.infinity,fit: BoxFit.cover,)
-
-                                ),
-                                GradientView(
-                                  colors: const [Colors.transparent, Color(0xffA375AD)],
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      IconButton(onPressed: (){
-                                        String memeImageUrl =
-                                        snapshot.data!.data!.memes![index].url.toString();
-                                        shareAtIndex(memeImageUrl , context);
-                                      }, icon: const Icon(Icons.share,color: Colors.white,)),
-                                      IconButton(onPressed: (){
-                                        requestStoragePermissions(memeImageUrl , context);
-                                      }, icon: const Icon(Icons.download,color: Colors.white,))
-
-                                    ],),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Error Occured : ${snapshot.error}"),
-                    );
-                  } else {
-                    return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.teal,
-                        ));
-                  }
-                },
-              ),
+              child: prepareGridView(context, snapshot),
             ),
           );
         },
       ),
+    );
+  }
+
+  //todo: Prepare GridView
+  GridView prepareGridView(BuildContext context, AsyncSnapshot<MemesModel> snapshot) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemCount: snapshot.hasData ? snapshot.data!.data!.memes!.length : 1,
+      itemBuilder: (context, index) {
+        if (snapshot.hasData) {
+          String memeId =
+          snapshot.data!.data!.memes![index].id.toString();
+          String memeName =
+          snapshot.data!.data!.memes![index].name.toString();
+          String memeImageUrl =
+          snapshot.data!.data!.memes![index].url.toString();
+
+          CartCardModel addCartItem = CartCardModel(
+              id: memeId,
+              nameCart: memeName,
+              imageUrlCart: memeImageUrl);
+          return Card(
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(0),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                child: SizedBox(
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomStart,
+                    children: [
+                      SizedBox(
+                          width: double.infinity,
+                          child: Image.network(memeImageUrl , width: double.infinity,height: double.infinity,fit: BoxFit.cover,)
+
+                      ),
+                      GradientView(
+                        colors: const [Colors.transparent, Color(0xffA375AD)],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(onPressed: (){
+                              String memeImageUrl =
+                              snapshot.data!.data!.memes![index].url.toString();
+                              shareAtIndex(memeImageUrl , context);
+                            }, icon: const Icon(Icons.share,color: Colors.white,)),
+                            IconButton(onPressed: (){
+                              requestStoragePermissions(memeImageUrl , context);
+                            }, icon: const Icon(Icons.download,color: Colors.white,))
+
+                          ],),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text("Error Occured : ${snapshot.error}"),
+          );
+        } else {
+          return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.teal,
+              ));
+        }
+      },
     );
   }
 
